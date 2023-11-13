@@ -20,4 +20,19 @@ export class AuthController {
     async verifyUser(@Body() { verifyToken }: { verifyToken: string }) {
         return this.authService.verifyUser(verifyToken);
     }
+
+    @Post('send-forgot-password-link')
+    async sendForgotPasswordLink(@Body() { email }: { email: string }) {
+        return this.authService.createForgotPasswordLink(email);
+    }
+
+    @Post('verify-forgot-password')
+    async verifyForgotPassword(@Body() { verifyToken }: { verifyToken: string }) {
+        return this.authService.verifyForgotPassword(verifyToken);
+    }
+
+    @Post('reset-password')
+    async resetPassword(@Body() { password, confirmPassword }: { password: string, confirmPassword: string }) {
+        return this.authService.resetPassword(password, confirmPassword);
+    }
 }

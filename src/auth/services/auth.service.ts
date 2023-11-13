@@ -112,4 +112,30 @@ export class AuthService {
 
         return result;
     }
+
+    async createForgotPasswordLink(email: string) {
+        const verifyToken = this.jwtService.sign(
+            { email },
+            {
+                secret: process.env.SECRET_FORGOT_PASSWORD,
+                expiresIn: process.env.EXPIRESIN_FORGOT_PASSWORD,
+            },
+        );
+
+        await this.userModel.findOneAndUpdate({ email }, { verifyToken })
+
+        return {
+            verifyToken
+        };
+    }
+
+    async verifyForgotPassword(verifyToken: string) {
+        console.log(verifyToken)
+    }
+
+    async resetPassword(password: string, confirmPassword: string) {
+        if (password !== confirmPassword) {
+            throw new HttpException('Password and confirm password are not same', HttpStatus.BAD_REQUEST);
+        }
+    }
 }
