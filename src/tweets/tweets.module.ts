@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module } from "@nestjs/common";
 import { TweetsController } from "./tweets.controller";
 import { TweetsService } from "./tweets.service";
 import { MongooseModule } from "@nestjs/mongoose";
@@ -10,6 +10,7 @@ import { User, UserSchema } from "src/auth/user.entity";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Hashtag, HashtagSchema } from "./entities/hashtags.entity";
 import { Bookmark, BookmarkSchema } from "./entities/bookmarks.entity";
+import { CreateTweetMiddleware } from "./middlewares/createTweet.middleware";
 
 @Module({
     imports: [MongooseModule.forFeature([
@@ -31,4 +32,8 @@ import { Bookmark, BookmarkSchema } from "./entities/bookmarks.entity";
     controllers: [TweetsController],
     providers: [TweetsService, AuthService, UserService]
 })
-export class TweetsModule { }
+export class TweetsModule {
+    configure(consumer: MiddlewareConsumer) {
+        consumer.apply(CreateTweetMiddleware).forRoutes('tweets/create');
+    }
+}
