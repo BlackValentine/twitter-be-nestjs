@@ -11,7 +11,7 @@ export class ControllerAuthGuard implements CanActivate {
         const { accesstoken } = request.headers;
 
         try {
-            const { email } = this.jwtService.verify(accesstoken);
+            const { _id, email } = this.jwtService.verify(accesstoken);
 
             const user = await this.authService.validateUser(email);
 
@@ -19,9 +19,10 @@ export class ControllerAuthGuard implements CanActivate {
                 throw new ForbiddenException('Invalid authorization token')
             }
             request.email = email;
+            request._id = _id;
             return true;
         } catch (error) {
-            console.log('error')
+            console.log(error)
         }
     }
 }
