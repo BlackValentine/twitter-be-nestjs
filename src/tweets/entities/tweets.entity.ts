@@ -18,7 +18,7 @@ export class Tweet extends BaseEntity {
     content: string
 
     @Prop()
-    parentId: null | string
+    parentId: null | ObjectId
 
     @Prop()
     hashtags: ObjectId[]

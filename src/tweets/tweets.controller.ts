@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from "@nes
 import { TweetsService } from "./tweets.service";
 import { CreateTweetDto } from "./tweets.dto";
 import { ControllerAuthGuard } from "src/auth/guards/auth.guard";
+import { TweetType } from "./tweets.type";
 
 @Controller('tweets')
 export class TweetsController {
@@ -28,5 +29,10 @@ export class TweetsController {
     @Delete('unbookmark')
     async unBookmarkTweet(@Body() { tweetId }: { tweetId: string }, @Req() { _id }: { _id: string }) {
         return this.tweetsService.unBookmarkTweet(tweetId, _id);
+    }
+
+    @Get(':id/childrent')
+    async getTweetChildrent(@Body() { limit, page, type }: { limit: number, page: number, type: TweetType }, @Param() { id }: { id: string }) {
+        return this.tweetsService.getTweetChildrent(limit, page, type, id);
     }
 }
