@@ -8,7 +8,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from './user.service';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from '../user.entity';
+import { User } from '../entities/user.entity';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 

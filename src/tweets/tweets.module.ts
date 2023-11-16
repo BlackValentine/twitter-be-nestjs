@@ -6,34 +6,37 @@ import { Tweet, TweetSchema } from "./entities/tweets.entity";
 import { JwtModule } from "@nestjs/jwt";
 import { AuthService } from "src/auth/services/auth.service";
 import { UserService } from "src/auth/services/user.service";
-import { User, UserSchema } from "src/auth/user.entity";
+import { User, UserSchema } from "src/auth/entities/user.entity";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { Hashtag, HashtagSchema } from "./entities/hashtags.entity";
 import { Bookmark, BookmarkSchema } from "./entities/bookmarks.entity";
 import { CreateTweetMiddleware } from "./middlewares/createTweet.middleware";
+import { Follow, FollowSchema } from "src/auth/entities/follower.entity";
 
 @Module({
-    imports: [MongooseModule.forFeature([
-        { name: Tweet.name, schema: TweetSchema },
-        { name: User.name, schema: UserSchema },
-        { name: Hashtag.name, schema: HashtagSchema },
-        { name: Bookmark.name, schema: BookmarkSchema }
-    ]
-    ),
+  imports: [
+    MongooseModule.forFeature([
+      { name: Tweet.name, schema: TweetSchema },
+      { name: User.name, schema: UserSchema },
+      { name: Hashtag.name, schema: HashtagSchema },
+      { name: Bookmark.name, schema: BookmarkSchema },
+      { name: Follow.name, schema: FollowSchema },
+    ]),
     JwtModule.registerAsync({
-        imports: [ConfigModule],
-        useFactory: async (configService: ConfigService) => {
-            return {
-                secret: configService.get<string>('SECRET_KEY'),
-            };
-        },
-        inject: [ConfigService],
-    }),],
-    controllers: [TweetsController],
-    providers: [TweetsService, AuthService, UserService]
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => {
+        return {
+          secret: configService.get<string>('SECRET_KEY'),
+        };
+      },
+      inject: [ConfigService],
+    }),
+  ],
+  controllers: [TweetsController],
+  providers: [TweetsService, AuthService, UserService],
 })
 export class TweetsModule {
-    configure(consumer: MiddlewareConsumer) {
-        consumer.apply(CreateTweetMiddleware).forRoutes('tweets/create');
-    }
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(CreateTweetMiddleware).forRoutes('tweets/create');
+  }
 }
