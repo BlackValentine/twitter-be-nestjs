@@ -8,4 +8,5 @@ export class CreateTweetDto {
     hashtags: string[]
     mentions: string[]
     medias: Media[]
+    tweetCircle: string[]
 }

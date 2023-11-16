@@ -21,11 +21,12 @@ export class AuthService {
     @InjectModel(User.name) private readonly userModel: Model<User>,
   ) {}
 
-  async _createToken({ email, _id }, refresh = false) {
+  async _createToken({ email, _id, active }, refresh = false) {
     //convert email to access token
     const accessToken = this.jwtService.sign({
       email,
-      _id
+      _id,
+      active,
     });
     if (!refresh) {
       const refreshToken = this.jwtService.sign(

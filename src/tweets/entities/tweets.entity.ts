@@ -34,6 +34,9 @@ export class Tweet extends BaseEntity {
 
     @Prop()
     userViews?: number
+
+    @Prop()
+    tweetCircle?: ObjectId[]
 }
 
 export const TweetSchema = SchemaFactory.createForClass(Tweet);

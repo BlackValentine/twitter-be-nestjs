@@ -34,7 +34,7 @@ export class UserService {
   async login(email: string) {
     const user = await this.userModel.findOne({ email: email });
 
-    const token = await this.authService._createToken({ email, _id: user._id });
+    const token = await this.authService._createToken({ email, _id: user._id, active: user.active });
 
     return {
       ...token,

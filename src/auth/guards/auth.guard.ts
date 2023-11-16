@@ -11,7 +11,7 @@ export class ControllerAuthGuard implements CanActivate {
         const { accesstoken } = request.headers;
 
         try {
-            const { _id, email } = this.jwtService.verify(accesstoken);
+            const { _id, email, active } = this.jwtService.verify(accesstoken);
 
             const user = await this.authService.validateUser(email);
 
@@ -20,6 +20,8 @@ export class ControllerAuthGuard implements CanActivate {
             }
             request.email = email;
             request._id = _id;
+            request.active = active;
+            
             return true;
         } catch (error) {
             console.log(error)
