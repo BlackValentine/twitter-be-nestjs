@@ -36,4 +36,13 @@ export class UserController {
   ) {
     return this.userService.followUser(_id, followUserId);
   }
+
+  @UseGuards(ControllerAuthGuard)
+  @Post('unfollow')
+  async unfollowUser(
+    @Body() { followUserId }: { followUserId: string },
+    @Req() { _id }: { _id: string },
+  ) {
+    return this.userService.unfollowUser(_id, followUserId);
+  }
 }

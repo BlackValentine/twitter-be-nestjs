@@ -107,6 +107,22 @@ export class UserService {
     return result;
   }
 
+  async unfollowUser(id: string, followUserId: string) {
+    const result = await this.followModel.findOneAndDelete({
+      userId: new ObjectId(id),
+      followUserId: new ObjectId(followUserId),
+    });
+    if (!result) {
+      return {
+        message: 'This follow was not exist.',
+      };
+    }
+    return {
+      data: result,
+      message: `Unfollow user: ${followUserId} successfully !!!`,
+    };
+  }
+
   private reverse(s: string) {
     return s.split('').reverse().join('');
   }
